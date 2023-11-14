@@ -44,7 +44,6 @@ def file2vid(filename, videosize: tuple, framerate=24, output_filename='output.g
 	colors = byteHexToHexColor(readBytesToHex(open(filename, "r")))
 	frameCount = int(len(colors) / (videosize[0] * videosize[1])) + 1
 	image_list = [Image.new("RGB", videosize) for i in range(frameCount if frameCount > 0 else 1)]
-	print(frameCount)
 	current_il_index = 0
 	while len(colors) > 0:
 		image = image_list[current_il_index]
@@ -58,3 +57,28 @@ def file2vid(filename, videosize: tuple, framerate=24, output_filename='output.g
 		current_il_index += 1
 	image_list[0].save(output_filename, save_all=True, append_images=image_list[1:], duration=msDelay)
 	return True
+
+def rgb2hex(rgb):
+	return (hex(rgb[0])[2:], hex(rgb[1])[2:], hex(rgb[2])[2:])
+
+def isEmptyPixel(obj):
+	return obj == ("0","0","0")
+
+def imageToHex(filename):
+	colors = []
+	img = Image.open(filename)
+	for y in range(img.size[1]):
+		for x in range(img.size[0]):
+			color = list(rgb2hex(img.getpixel((x,y))))
+			color = [i for i in color if i != "0"]
+			if not isEmptyPixel(color):
+				colors += list(color)
+	return colors
+
+def colorsToText(colors: list, output_filename: str="output.txt"):
+	text = "".join([chr(int(i, 16)) for i in colors]).replace(r"\x00", "")
+	return text
+
+def image2file(filename: str, output_filename: str="output.txt"):
+	with open(output_filename,"w") as file:
+		file.write(colorsToText(imageToHex(filename)))
