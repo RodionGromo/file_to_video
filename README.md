@@ -4,3 +4,4 @@ What this does? This script can convert any file that consists of chars on utf-8
 # how to
 - download `filevidconv.py`
 - use function `file2img` to convert file to image, and `file2vid` to convert to video
+- use function `image2file` to convert image to file, and `gif2file` to convert gif to data
