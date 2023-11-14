@@ -35,3 +35,26 @@ def colorsToSingleImage(colors: list, imagesize: tuple=None):
 	except IndexError:
 		return image
 	return image
+
+def file2img(filename, imagesize: tuple=None):
+	return colorsToSingleImage(byteHexToHexColor(readBytesToHex(open(filename,"r"))), imagesize)
+
+def file2vid(filename, videosize: tuple, framerate=24, output_filename='output.gif'):
+	msDelay = int((1/framerate) * 1000)
+	colors = byteHexToHexColor(readBytesToHex(open(filename, "r")))
+	frameCount = int(len(colors) / (videosize[0] * videosize[1])) + 1
+	image_list = [Image.new("RGB", videosize) for i in range(frameCount if frameCount > 0 else 1)]
+	print(frameCount)
+	current_il_index = 0
+	while len(colors) > 0:
+		image = image_list[current_il_index]
+		try:
+			for y in range(image.size[1]):
+				for x in range(image.size[0]):
+					image.putpixel((x,y), ImageColor.getrgb(colors[0]))
+					del colors[0]
+		except IndexError:
+			break
+		current_il_index += 1
+	image_list[0].save(output_filename, save_all=True, append_images=image_list[1:], duration=msDelay)
+	return True
