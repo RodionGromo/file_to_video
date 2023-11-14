@@ -1,7 +1,7 @@
 # file_to_video
-What this does? This script can convert any file that consists of chars on utf-8 range from 0 to 255, to image/video file
+What this does? This script can convert any file that consists of chars on utf-8 range from 0 to 255, to image/gif file
 
 # how to
 - download `filevidconv.py`
-- use function `file2img` to convert file to image, and `file2vid` to convert to video
-- use function `image2file` to convert image to file, and `gif2file` to convert gif to data
+- use function `file2img` to convert file to image, and `file2gif` to convert to gif
+- use function `image2textfile` to convert image to file, and `gif2textfile` to convert gif to data
